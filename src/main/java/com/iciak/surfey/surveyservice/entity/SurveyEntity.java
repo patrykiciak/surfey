@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.PERSIST;
+import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PRIVATE;
 import static org.hibernate.annotations.FetchMode.SUBSELECT;
 

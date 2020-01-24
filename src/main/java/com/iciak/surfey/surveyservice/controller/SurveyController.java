@@ -1,5 +1,6 @@
 package com.iciak.surfey.surveyservice.controller;
 
+import com.iciak.surfey.surveyservice.model.Question;
 import com.iciak.surfey.surveyservice.model.Survey;
 import com.iciak.surfey.surveyservice.model.Surveys;
 import com.iciak.surfey.surveyservice.service.SurveyService;
@@ -29,5 +30,23 @@ public class SurveyController {
         return surveyService.find(surveyId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity createSurvey(@RequestBody @NonNull final Survey survey) {
+        surveyService.create(survey);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{uuid}")
+    public ResponseEntity updateSurvey(@PathVariable @NonNull final UUID uuid, @RequestBody @NonNull final Survey survey) {
+        surveyService.update(uuid, survey);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity deleteSurvey(@PathVariable @NonNull final UUID uuid) {
+        surveyService.delete(uuid);
+        return ResponseEntity.noContent().build();
     }
 }

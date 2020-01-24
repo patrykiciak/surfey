@@ -8,7 +8,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class QuestionResponses {
+public class Results {
     @NonNull
-    List<QuestionResponse> questionResponses;
+    List<Result> results;
 }

@@ -1,5 +1,6 @@
 package com.iciak.surfey.surveyservice.model;
 
+import com.iciak.surfey.userservice.model.User;
 import lombok.*;
 
 import java.util.UUID;
@@ -10,9 +11,11 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(force = true, access = PRIVATE)
-public class AnswerOption {
+public class Result {
     @NonNull
     UUID uuid;
     @NonNull
-    String answer;
+    Answer chosenAnswer;
+    @NonNull
+    User user;
 }

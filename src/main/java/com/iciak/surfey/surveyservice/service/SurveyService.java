@@ -1,7 +1,11 @@
 package com.iciak.surfey.surveyservice.service;
 
+import com.iciak.surfey.surveyservice.entity.SurveyEntity;
+import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
+import com.iciak.surfey.surveyservice.model.Question;
 import com.iciak.surfey.surveyservice.model.Survey;
 import com.iciak.surfey.surveyservice.repository.SurveyRepository;
+import com.iciak.surfey.surveyservice.service.converter.QuestionMapper;
 import com.iciak.surfey.surveyservice.service.converter.SurveyMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -19,6 +23,7 @@ public class SurveyService {
 
     private final SurveyRepository surveyRepository;
     private final SurveyMapper surveyMapper;
+    private final QuestionMapper questionMapper;
 
     public List<Survey> findAll() {
         return surveyRepository.findAll().stream()
@@ -29,5 +34,26 @@ public class SurveyService {
     public Optional<Survey> find(@NonNull final UUID surveyId) {
         return surveyRepository.findByUuid(surveyId)
                 .map(surveyMapper::toModel);
+    }
+
+    public void create(@NonNull final Survey survey) {
+        surveyRepository.save(SurveyEntity.builder()
+                .uuid(UUID.randomUUID())
+                .name(survey.getName())
+                .questions(survey.getQuestions().stream().map(questionMapper::toEntity).collect(toList()))
+                .build());
+    }
+
+    public void update(@NonNull final UUID uuid, @NonNull final Survey survey) {
+        surveyRepository.save(SurveyEntity.builder()
+                .id(surveyRepository.findByUuid(uuid).orElseThrow(EntityNotFoundException::new).getId())
+                .uuid(uuid)
+                .questions(survey.getQuestions().stream().map(questionMapper::toEntity).collect(toList()))
+                .name(survey.getName())
+                .build());
+    }
+
+    public void delete(UUID uuid) {
+        surveyRepository.deleteByUuid(uuid);
     }
 }

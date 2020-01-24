@@ -27,6 +27,6 @@ public class QuestionEntity {
     @OneToMany(cascade = ALL)
     @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "question_id")
-    private final List<AnswerOptionEntity> answers;
+    private final List<AnswerEntity> answers;
     private final String content;
 }

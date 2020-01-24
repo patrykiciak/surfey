@@ -11,13 +11,23 @@ import static java.util.stream.Collectors.toList;
 @Component
 @AllArgsConstructor
 public class QuestionMapper {
-    private final AnswerOptionMapper answerOptionMapper;
+    private final AnswerMapper answerMapper;
+
     public Question toModel(@NonNull final QuestionEntity entity) {
         return Question.builder()
                 .uuid(entity.getUuid())
                 .content(entity.getContent())
-                .answerOptions(entity.getAnswers().stream()
-                        .map(answerOptionMapper::toModel).collect(toList()))
+                .answers(entity.getAnswers().stream()
+                        .map(answerMapper::toModel).collect(toList()))
+                .build();
+    }
+
+    public QuestionEntity toEntity(Question question) {
+        return QuestionEntity.builder()
+                .uuid(question.getUuid())
+                .content(question.getContent())
+                .answers(question.getAnswers().stream()
+                        .map(answerMapper::toEntity).collect(toList()))
                 .build();
     }
 }

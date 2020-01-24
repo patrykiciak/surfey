@@ -17,5 +17,5 @@ public class Question {
     @NonNull
     String content;
     @NonNull
-    List<AnswerOption> answerOptions;
+    List<Answer> answers;
 }

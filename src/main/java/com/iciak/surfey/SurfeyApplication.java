@@ -1,11 +1,14 @@
 package com.iciak.surfey;
 
-import com.iciak.surfey.surveyservice.entity.AnswerOptionEntity;
+import com.iciak.surfey.surveyservice.entity.AnswerEntity;
 import com.iciak.surfey.surveyservice.entity.QuestionEntity;
+import com.iciak.surfey.surveyservice.entity.ResultEntity;
 import com.iciak.surfey.surveyservice.entity.SurveyEntity;
+import com.iciak.surfey.surveyservice.repository.ResultRepository;
 import com.iciak.surfey.surveyservice.repository.SurveyRepository;
 import com.iciak.surfey.userservice.entity.UserEntity;
 import com.iciak.surfey.userservice.enumerated.Sex;
+import com.iciak.surfey.userservice.model.User;
 import com.iciak.surfey.userservice.repository.UserRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,16 +30,17 @@ public class SurfeyApplication {
 		SurveyRepository surveyRepository = ctx.getBean(SurveyRepository.class);
 		UserRepository userRepository = ctx.getBean(UserRepository.class);
 
-		userRepository.save(UserEntity.builder()
+
+		UserEntity user = UserEntity.builder()
 				.uuid(UUID.randomUUID())
 				.dateOfBirth(LocalDate.of(1998, Month.APRIL, 12))
 				.login("pyku")
 				.password("password")
 				.sex(Sex.MAN)
-				.build()
-		);
+				.build();
+		userRepository.save(user);
 
-
+		AnswerEntity answerEntity = AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdf").build();
 
 		surveyRepository.saveAll(new ArrayList<>(
 				Arrays.asList(
@@ -49,10 +53,10 @@ public class SurfeyApplication {
 												.content("Co robisz?")
 												.answers(
 														Arrays.asList(
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdf").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdsfdsdff").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdasasddf").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdfsdsdfsdff").build()
+																answerEntity,
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdsfdsdff").build(),
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdasasddf").build(),
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdfsdsdfsdff").build()
 														)
 												).build())
 								).build(),
@@ -67,10 +71,10 @@ public class SurfeyApplication {
 												.content("Co robisz?")
 												.answers(
 														Arrays.asList(
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdf").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdsfdsdff").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdasasddf").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdfsdsdfsdff").build()
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdf").build(),
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdsfdsdff").build(),
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdasasddf").build(),
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdfsdsdfsdff").build()
 														)
 												).build())
 								).build(),
@@ -83,16 +87,23 @@ public class SurfeyApplication {
 												.content("Co robisz?")
 												.answers(
 														Arrays.asList(
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdf").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdsfdsdff").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdasasddf").build(),
-																AnswerOptionEntity.builder().uuid(UUID.randomUUID()).answer("gsdfsdsdfsdff").build()
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdf").build(),
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdsfdsdff").build(),
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdasasddf").build(),
+																AnswerEntity.builder().uuid(UUID.randomUUID()).content("gsdfsdsdfsdff").build()
 														)
 												).build())
 								).build()
 
 				)
 		));
+
+		ResultRepository resultRepository = ctx.getBean(ResultRepository.class);
+		resultRepository.save(ResultEntity.builder()
+				.uuid(UUID.randomUUID())
+				.chosenAnswer(answerEntity)
+				.user(user)
+				.build());
 	}
 
 }
