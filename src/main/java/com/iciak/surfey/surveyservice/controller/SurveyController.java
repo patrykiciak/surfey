@@ -1,6 +1,5 @@
 package com.iciak.surfey.surveyservice.controller;
 
-import com.iciak.surfey.surveyservice.model.Question;
 import com.iciak.surfey.surveyservice.model.Survey;
 import com.iciak.surfey.surveyservice.model.Surveys;
 import com.iciak.surfey.surveyservice.service.SurveyService;

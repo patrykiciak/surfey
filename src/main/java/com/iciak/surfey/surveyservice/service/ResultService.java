@@ -1,15 +1,13 @@
 package com.iciak.surfey.surveyservice.service;
 
-import com.iciak.surfey.surveyservice.entity.AnswerEntity;
 import com.iciak.surfey.surveyservice.entity.ResultEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
 import com.iciak.surfey.surveyservice.model.Result;
 import com.iciak.surfey.surveyservice.repository.AnswerRepository;
 import com.iciak.surfey.surveyservice.repository.ResultRepository;
-import com.iciak.surfey.surveyservice.service.converter.ResultMapper;
-import com.iciak.surfey.userservice.repository.UserRepository;
-import com.iciak.surfey.userservice.service.mapper.UserMapper;
+import com.iciak.surfey.surveyservice.service.mapper.ResultMapper;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,44 +19,48 @@ import static java.util.stream.Collectors.toList;
 @Service
 @AllArgsConstructor
 public class ResultService {
-    private final ResultRepository repository;
-    private final UserRepository userRepository;
+    private final ResultRepository resultRepository;
     private final ResultMapper mapper;
-    private final UserMapper userMapper;
     private final AnswerRepository answerRepository;
 
     public List<Result> findAll() {
-        return repository.findAll().stream()
+        return resultRepository.findAll().stream()
                 .map(mapper::toModel)
                 .collect(toList());
     }
 
-    public Optional<Result> find(UUID uuid) {
-        return repository.findByUuid(uuid)
+    public Optional<Result> find(@NonNull final UUID uuid) {
+        return resultRepository.findByUuid(uuid)
                 .map(mapper::toModel);
     }
 
-    public void create(Result result) {
+    public void create(@NonNull final Result result) {
 
-        repository.save(ResultEntity.builder()
-                .chosenAnswer(answerRepository.findByUuid(result.getChosenAnswer().getUuid()).orElseThrow(EntityNotFoundException::new))
+        resultRepository.save(ResultEntity.builder()
+                .chosenAnswer(answerRepository.findByUuid(result.getUserUuid()).orElseThrow(
+                        () -> new EntityNotFoundException("No such a UUID of Answer in the database")
+                ))
                 .uuid(UUID.randomUUID())
-                .user(userRepository.findByUuid(result.getUser().getUuid()).orElseThrow())
+                .userUuid(result.getUserUuid())
                 .build());
     }
 
-    public void update(UUID uuid, Result result) {
-        ResultEntity dbQuestion = repository.findByUuid(uuid).orElseThrow(EntityNotFoundException::new);
-        repository.save(ResultEntity.builder()
-                .user(userMapper.toEntity(result.getUser()))
+    public void update(@NonNull final UUID uuid, @NonNull final Result result) {
+        ResultEntity dbQuestion = resultRepository.findByUuid(uuid).orElseThrow(
+                () -> new EntityNotFoundException("No such a UUID of Result in the database")
+        );
+        resultRepository.save(ResultEntity.builder()
+                .userUuid(result.getUserUuid())
                 .id(dbQuestion.getId())
-                .uuid(result.getUuid())
-                .chosenAnswer(AnswerEntity.builder().uuid(result.getChosenAnswer().getUuid()).build())
+                .uuid(uuid)
+                .chosenAnswer(answerRepository.findByUuid(result.getAnswerUuid()).orElseThrow(
+                        () -> new EntityNotFoundException("No such a UUID of Answer in the database")
+                ))
                 .build()
         );
     }
 
-    public void delete(final UUID uuid) {
-        repository.deleteByUuid(uuid);
+    public void delete(@NonNull final UUID uuid) {
+        resultRepository.deleteByUuid(uuid);
     }
 }

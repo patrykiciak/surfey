@@ -1,6 +1,5 @@
 package com.iciak.surfey.surveyservice.model;
 
-import com.iciak.surfey.userservice.model.User;
 import lombok.*;
 
 import java.util.UUID;
@@ -15,7 +14,7 @@ public class Result {
     @NonNull
     UUID uuid;
     @NonNull
-    Answer chosenAnswer;
+    UUID answerUuid;
     @NonNull
-    User user;
+    UUID userUuid;
 }

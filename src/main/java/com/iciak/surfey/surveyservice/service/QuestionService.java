@@ -4,17 +4,15 @@ import com.iciak.surfey.surveyservice.entity.QuestionEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
 import com.iciak.surfey.surveyservice.model.Question;
 import com.iciak.surfey.surveyservice.repository.QuestionRepository;
-import com.iciak.surfey.surveyservice.service.converter.AnswerMapper;
-import com.iciak.surfey.surveyservice.service.converter.QuestionMapper;
+import com.iciak.surfey.surveyservice.service.mapper.AnswerMapper;
+import com.iciak.surfey.surveyservice.service.mapper.QuestionMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,7 +35,9 @@ public class QuestionService {
 
     public void update(@NonNull final UUID uuid, @NonNull final Question question) {
         questionRepository.save(QuestionEntity.builder()
-                .id(questionRepository.findByUuid(uuid).orElseThrow(EntityNotFoundException::new).getId())
+                .id(questionRepository.findByUuid(uuid).orElseThrow(
+                        () -> new EntityNotFoundException("No such a UUID of Question in the database")
+                ).getId())
                 .uuid(uuid)
                 .answers(question.getAnswers().stream().map(answerMapper::toEntity).collect(toList()))
                 .content(question.getContent())

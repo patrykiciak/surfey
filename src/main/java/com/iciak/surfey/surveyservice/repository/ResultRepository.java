@@ -1,6 +1,7 @@
 package com.iciak.surfey.surveyservice.repository;
 
 import com.iciak.surfey.surveyservice.entity.ResultEntity;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface ResultRepository extends JpaRepository<ResultEntity, Integer> {
-    Optional<ResultEntity> findByUuid(UUID uuid);
+
+    Optional<ResultEntity> findByUuid(@NonNull final UUID uuid);
+
     @Transactional
-    void deleteByUuid(UUID uuid);
+    void deleteByUuid(@NonNull final UUID uuid);
 }

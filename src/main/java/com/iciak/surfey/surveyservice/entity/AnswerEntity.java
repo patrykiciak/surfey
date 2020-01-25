@@ -18,6 +18,8 @@ public class AnswerEntity {
     @GeneratedValue(strategy = IDENTITY)
     private final int id;
     @Column(unique = true)
+    @NonNull
     private final UUID uuid;
-    private final String content;
+    @NonNull
+    private String content;
 }

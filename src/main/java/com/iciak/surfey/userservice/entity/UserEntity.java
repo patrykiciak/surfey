@@ -3,6 +3,7 @@ package com.iciak.surfey.userservice.entity;
 import com.iciak.surfey.userservice.enumerated.Sex;
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,8 +23,10 @@ public class UserEntity {
     @GeneratedValue
     private final int id;
     @NonNull
+    @Column(unique = true)
     private UUID uuid;
     @NonNull
+    @Column(unique = true)
     private String login;
     @NonNull
     private String password;

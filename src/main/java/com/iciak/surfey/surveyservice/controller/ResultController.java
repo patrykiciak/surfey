@@ -26,14 +26,14 @@ public class ResultController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<Result> find(@PathVariable final UUID uuid) {
+    public ResponseEntity<Result> find(@PathVariable @NonNull final UUID uuid) {
         return resultService.find(uuid)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody final Result result) {
+    public ResponseEntity create(@RequestBody @NonNull final Result result) {
         resultService.create(result);
         return ResponseEntity.ok().build();
     }

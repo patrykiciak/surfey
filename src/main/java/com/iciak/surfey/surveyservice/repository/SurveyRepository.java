@@ -11,7 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface SurveyRepository extends JpaRepository<SurveyEntity, Integer> {
-    Optional<SurveyEntity> findByUuid(UUID uuid);
+
+    Optional<SurveyEntity> findByUuid(@NonNull final UUID uuid);
+
     @Transactional
-    void deleteByUuid(UUID uuid);
+    void deleteByUuid(@NonNull final UUID uuid);
 }

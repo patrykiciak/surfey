@@ -13,6 +13,9 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE, force = true)
 @AllArgsConstructor(access = PRIVATE)
 @Entity(name = "results")
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"uuid"})
+})
 public class ResultEntity {
     @Id
     @GeneratedValue
@@ -21,8 +24,7 @@ public class ResultEntity {
     @NonNull
     private final UUID uuid;
     @NonNull
-    @OneToOne
-    private final UserEntity user;
+    private final UUID userUuid;
     @NonNull
     @ManyToOne
     @JoinColumn

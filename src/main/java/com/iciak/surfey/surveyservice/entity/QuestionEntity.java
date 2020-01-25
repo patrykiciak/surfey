@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.*;
 import static lombok.AccessLevel.PRIVATE;
 
 @Data
@@ -24,9 +24,10 @@ public class QuestionEntity {
     @NonNull
     private final UUID uuid;
     @NonNull
-    @OneToMany(cascade = ALL)
+    @OneToMany(cascade = {DETACH, PERSIST, REFRESH, REMOVE})
     @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "question_id")
     private final List<AnswerEntity> answers;
+    @NonNull
     private final String content;
 }

@@ -1,10 +1,11 @@
-package com.iciak.surfey.surveyservice.service.converter;
+package com.iciak.surfey.surveyservice.service.mapper;
 
 import com.iciak.surfey.surveyservice.entity.ResultEntity;
 import com.iciak.surfey.surveyservice.model.Result;
 import com.iciak.surfey.userservice.service.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,10 +16,10 @@ public class ResultMapper {
     private final UserMapper userMapper;
 
 
-    public Result toModel(ResultEntity entity) {
+    public Result toModel(@NonNull final ResultEntity entity) {
         return Result.builder()
-                .user(userMapper.toModel(entity.getUser()))
-                .chosenAnswer(answerMapper.toModel(entity.getChosenAnswer()))
+                .userUuid(entity.getUserUuid())
+                .answerUuid(entity.getChosenAnswer().getUuid())
                 .uuid(entity.getUuid())
                 .build();
     }

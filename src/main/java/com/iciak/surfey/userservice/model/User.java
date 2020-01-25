@@ -15,8 +15,12 @@ import static lombok.AccessLevel.PRIVATE;
 public class User {
     @NonNull
     UUID uuid;
+    @NonNull
     String login;
+    @NonNull
     String password;
+    @NonNull
     Sex sex;
+    @NonNull
     LocalDate dateOfBirth;
 }

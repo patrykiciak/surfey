@@ -2,11 +2,10 @@ package com.iciak.surfey.surveyservice.service;
 
 import com.iciak.surfey.surveyservice.entity.SurveyEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
-import com.iciak.surfey.surveyservice.model.Question;
 import com.iciak.surfey.surveyservice.model.Survey;
 import com.iciak.surfey.surveyservice.repository.SurveyRepository;
-import com.iciak.surfey.surveyservice.service.converter.QuestionMapper;
-import com.iciak.surfey.surveyservice.service.converter.SurveyMapper;
+import com.iciak.surfey.surveyservice.service.mapper.QuestionMapper;
+import com.iciak.surfey.surveyservice.service.mapper.SurveyMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,8 @@ public class SurveyService {
 
     public List<Survey> findAll() {
         return surveyRepository.findAll().stream()
-                        .map(surveyMapper::toModel)
-                        .collect(toList());
+                .map(surveyMapper::toModel)
+                .collect(toList());
     }
 
     public Optional<Survey> find(@NonNull final UUID surveyId) {
@@ -46,14 +45,16 @@ public class SurveyService {
 
     public void update(@NonNull final UUID uuid, @NonNull final Survey survey) {
         surveyRepository.save(SurveyEntity.builder()
-                .id(surveyRepository.findByUuid(uuid).orElseThrow(EntityNotFoundException::new).getId())
+                .id(surveyRepository.findByUuid(uuid).orElseThrow(
+                        () -> new EntityNotFoundException("No such a UUID of Survey in the database"))
+                        .getId())
                 .uuid(uuid)
                 .questions(survey.getQuestions().stream().map(questionMapper::toEntity).collect(toList()))
                 .name(survey.getName())
                 .build());
     }
 
-    public void delete(UUID uuid) {
+    public void delete(@NonNull final UUID uuid) {
         surveyRepository.deleteByUuid(uuid);
     }
 }

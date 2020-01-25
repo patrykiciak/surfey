@@ -1,4 +1,4 @@
-package com.iciak.surfey.surveyservice.service.converter;
+package com.iciak.surfey.surveyservice.service.mapper;
 
 import com.iciak.surfey.surveyservice.entity.QuestionEntity;
 import com.iciak.surfey.surveyservice.model.Question;

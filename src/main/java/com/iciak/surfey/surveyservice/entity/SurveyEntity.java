@@ -7,9 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.CascadeType.PERSIST;
-import static lombok.AccessLevel.NONE;
+import static javax.persistence.CascadeType.*;
 import static lombok.AccessLevel.PRIVATE;
 import static org.hibernate.annotations.FetchMode.SUBSELECT;
 
@@ -27,7 +25,7 @@ public class SurveyEntity {
     private final UUID uuid;
     @NonNull
     private final String name;
-    @OneToMany(cascade = ALL)
+    @OneToMany(cascade = {DETACH, PERSIST, REFRESH, REMOVE})
     @Fetch(SUBSELECT)
     @JoinColumn(name = "survey_id")
     @NonNull
