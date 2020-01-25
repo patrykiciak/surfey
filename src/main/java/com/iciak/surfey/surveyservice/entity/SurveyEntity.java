@@ -25,7 +25,7 @@ public class SurveyEntity {
     private final UUID uuid;
     @NonNull
     private final String name;
-    @OneToMany(cascade = {DETACH, PERSIST, REFRESH, REMOVE})
+    @OneToMany(cascade = {DETACH, PERSIST, REFRESH})
     @Fetch(SUBSELECT)
     @JoinColumn(name = "survey_id")
     @NonNull
