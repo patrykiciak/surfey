@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,18 +45,13 @@ public class UserService {
         );
     }
 
-    public void update(@NonNull UUID uuid, @NonNull final User user) {
-        UserEntity dbUser = userRepository.findByUuid(user.getUuid()).orElseThrow(UserNotFoundException::new);
-        userRepository.save(
-                UserEntity.builder()
-                        .id(dbUser.getId())
-                        .uuid(uuid)
-                        .dateOfBirth(user.getDateOfBirth())
-                        .login(user.getLogin())
-                        .password(user.getPassword())
-                        .sex(user.getSex())
-                        .build()
-        );
+    @Transactional
+    public void update(@NonNull final UUID uuid, @NonNull final User user) {
+        UserEntity userEntity = userRepository.findByUuid(uuid).orElseThrow(UserNotFoundException::new);
+        userEntity.setDateOfBirth(user.getDateOfBirth());
+        userEntity.setLogin(user.getLogin());
+        userEntity.setPassword(user.getPassword());
+        userEntity.setSex(user.getSex());
     }
 
     public void delete(@NonNull final UUID uuid) {

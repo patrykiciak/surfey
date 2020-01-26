@@ -1,6 +1,5 @@
 package com.iciak.surfey.surveyservice.entity;
 
-import com.iciak.surfey.userservice.entity.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;

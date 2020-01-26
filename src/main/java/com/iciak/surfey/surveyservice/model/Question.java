@@ -2,7 +2,6 @@ package com.iciak.surfey.surveyservice.model;
 
 import lombok.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.UUID;
 
