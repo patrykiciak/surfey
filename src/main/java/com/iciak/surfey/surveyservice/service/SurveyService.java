@@ -4,7 +4,6 @@ import com.iciak.surfey.surveyservice.entity.SurveyEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
 import com.iciak.surfey.surveyservice.model.Survey;
 import com.iciak.surfey.surveyservice.repository.SurveyRepository;
-import com.iciak.surfey.surveyservice.service.mapper.QuestionMapper;
 import com.iciak.surfey.surveyservice.service.mapper.SurveyMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -23,7 +22,6 @@ public class SurveyService {
 
     private final SurveyRepository surveyRepository;
     private final SurveyMapper surveyMapper;
-    private final QuestionMapper questionMapper;
 
     public List<Survey> findAll() {
         return surveyRepository.findAll().stream()
@@ -37,14 +35,7 @@ public class SurveyService {
     }
 
     public void create(@NonNull final Survey survey) {
-        surveyRepository.save(SurveyEntity.builder()
-                .uuid(UUID.randomUUID())
-                .name(survey.getName())
-                .questions(survey.getQuestions()
-                        .stream()
-                        .map(questionMapper::toEntity)
-                        .collect(toList()))
-                .build());
+        surveyRepository.save(surveyMapper.createEntity(survey));
     }
 
     @Transactional

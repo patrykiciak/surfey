@@ -37,10 +37,7 @@ public class AnswerService {
         QuestionEntity questionEntity = questionRepository.findByUuid(questionUuid).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Question in the database")
         );
-        questionEntity.getAnswers().add(AnswerEntity.builder()
-                .uuid(UUID.randomUUID())
-                .content(answer.getContent())
-                .build());
+        questionEntity.getAnswers().add(answerMapper.createEntity(answer));
     }
 
     public Optional<Answer> findAnswer(@NonNull final UUID questionUuid, @NonNull final UUID answerUuid) {

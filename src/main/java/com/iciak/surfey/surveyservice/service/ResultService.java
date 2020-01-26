@@ -1,5 +1,6 @@
 package com.iciak.surfey.surveyservice.service;
 
+import com.iciak.surfey.surveyservice.entity.AnswerEntity;
 import com.iciak.surfey.surveyservice.entity.ResultEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
 import com.iciak.surfey.surveyservice.model.Result;
@@ -21,28 +22,26 @@ import static java.util.stream.Collectors.toList;
 @AllArgsConstructor
 public class ResultService {
     private final ResultRepository resultRepository;
-    private final ResultMapper mapper;
+    private final ResultMapper resultMapper;
     private final AnswerRepository answerRepository;
 
     public List<Result> findAll() {
         return resultRepository.findAll().stream()
-                .map(mapper::toModel)
+                .map(resultMapper::toModel)
                 .collect(toList());
     }
 
     public Optional<Result> find(@NonNull final UUID uuid) {
         return resultRepository.findByUuid(uuid)
-                .map(mapper::toModel);
+                .map(resultMapper::toModel);
     }
 
     public void create(@NonNull final Result result) {
 
-        resultRepository.save(ResultEntity.builder()
-                .chosenAnswer(answerRepository.findByUuid(result.getUserUuid()).orElseThrow(
-                        () -> new EntityNotFoundException("No such a UUID of Answer in the database")))
-                .uuid(UUID.randomUUID())
-                .userUuid(result.getUserUuid())
-                .build());
+        AnswerEntity chosenAnswer = answerRepository.findByUuid(result.getUserUuid()).orElseThrow(
+                () -> new EntityNotFoundException("No such a UUID of Answer in the database"));
+
+        resultRepository.save(resultMapper.createResult(result, chosenAnswer));
     }
 
     @Transactional

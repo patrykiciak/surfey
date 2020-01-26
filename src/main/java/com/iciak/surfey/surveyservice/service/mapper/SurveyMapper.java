@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -21,6 +23,17 @@ public class SurveyMapper {
                 .questions(surveyEntity.getQuestions()
                         .stream()
                         .map(questionMapper::toModel)
+                        .collect(toList()))
+                .build();
+    }
+
+    public SurveyEntity createEntity(@NonNull final Survey survey) {
+        return SurveyEntity.builder()
+                .uuid(UUID.randomUUID())
+                .name(survey.getName())
+                .questions(survey.getQuestions()
+                        .stream()
+                        .map(question ->  questionMapper.createEntity(question, null))
                         .collect(toList()))
                 .build();
     }

@@ -5,6 +5,8 @@ import com.iciak.surfey.surveyservice.model.Answer;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class AnswerMapper {
     public Answer toModel(@NonNull final AnswerEntity entity) {
@@ -14,10 +16,10 @@ public class AnswerMapper {
                 .build();
     }
 
-    public AnswerEntity toEntity(@NonNull final Answer model) {
+    public AnswerEntity createEntity(@NonNull final Answer entity) {
         return AnswerEntity.builder()
-                .content(model.getContent())
-                .uuid(model.getUuid())
+                .content(entity.getContent())
+                .uuid(UUID.randomUUID())
                 .build();
     }
 }

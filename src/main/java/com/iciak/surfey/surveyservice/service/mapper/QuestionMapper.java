@@ -8,6 +8,7 @@ import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -28,12 +29,13 @@ public class QuestionMapper {
                 .build();
     }
 
-    public QuestionEntity toEntity(@NonNull final Question question) {
+    public QuestionEntity createEntity(@NonNull final Question question, final SurveyEntity surveyEntity) {
         return QuestionEntity.builder()
-                .uuid(question.getUuid())
+                .survey(surveyEntity)
+                .uuid(UUID.randomUUID())
                 .content(question.getContent())
                 .answers(question.getAnswers().stream()
-                        .map(answerMapper::toEntity).collect(toList()))
+                        .map(answerMapper::createEntity).collect(toList()))
                 .build();
     }
 }
