@@ -17,17 +17,25 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor(access = PRIVATE)
 @Entity(name = "questions")
 public class QuestionEntity {
+
     @Id
     @GeneratedValue
-    private final int id;
+    private int id;
+
     @Column(unique = true)
     @NonNull
     private final UUID uuid;
+
     @NonNull
-    @OneToMany(cascade = {DETACH, PERSIST, REFRESH, REMOVE})
+    @OneToMany(cascade = ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
-    @JoinColumn(name = "question_id")
+    @JoinColumn(nullable = false)
     private final List<AnswerEntity> answers;
+
     @NonNull
-    private final String content;
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "survey_id")
+    private SurveyEntity survey;
 }

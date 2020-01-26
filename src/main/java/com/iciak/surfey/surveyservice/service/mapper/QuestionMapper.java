@@ -1,10 +1,13 @@
 package com.iciak.surfey.surveyservice.service.mapper;
 
 import com.iciak.surfey.surveyservice.entity.QuestionEntity;
+import com.iciak.surfey.surveyservice.entity.SurveyEntity;
 import com.iciak.surfey.surveyservice.model.Question;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -16,13 +19,16 @@ public class QuestionMapper {
     public Question toModel(@NonNull final QuestionEntity entity) {
         return Question.builder()
                 .uuid(entity.getUuid())
+                .surveyUuid(
+                        Optional.ofNullable(entity.getSurvey()).map(SurveyEntity::getUuid).orElse(null)
+                )
                 .content(entity.getContent())
                 .answers(entity.getAnswers().stream()
                         .map(answerMapper::toModel).collect(toList()))
                 .build();
     }
 
-    public QuestionEntity toEntity(Question question) {
+    public QuestionEntity toEntity(@NonNull final Question question) {
         return QuestionEntity.builder()
                 .uuid(question.getUuid())
                 .content(question.getContent())

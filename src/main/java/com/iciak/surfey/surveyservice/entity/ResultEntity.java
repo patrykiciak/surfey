@@ -20,7 +20,7 @@ public class ResultEntity {
     @Id
     @GeneratedValue
     private final int id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     @NonNull
     private final UUID uuid;
     @NonNull
@@ -28,5 +28,5 @@ public class ResultEntity {
     @NonNull
     @ManyToOne
     @JoinColumn
-    private final AnswerEntity chosenAnswer;
+    private AnswerEntity chosenAnswer;
 }

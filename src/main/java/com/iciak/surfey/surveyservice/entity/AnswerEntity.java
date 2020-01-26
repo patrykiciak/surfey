@@ -22,4 +22,5 @@ public class AnswerEntity {
     private final UUID uuid;
     @NonNull
     private String content;
+
 }

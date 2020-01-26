@@ -55,34 +55,34 @@ public class QuestionController {
 
     @PostMapping("/{questionUuid}/answers")
     public ResponseEntity createAnswer(@PathVariable @NonNull UUID questionUuid, @RequestBody @NonNull final Answer answer) {
-        answerService.create(questionUuid, answer);
+        answerService.createAnswer(questionUuid, answer);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{questionUuid}/answers")
     public ResponseEntity<Answers> getAllAnswers(@PathVariable @NonNull UUID questionUuid) {
-        return ResponseEntity.ok(answerService.getAll(questionUuid));
+        return ResponseEntity.ok(answerService.findAll(questionUuid));
     }
 
     @GetMapping("/{questionUuid}/answers/{answerUuid}")
     public ResponseEntity<Answer> findAnswer(@PathVariable @NonNull final UUID questionUuid,
                                              @PathVariable @NonNull final UUID answerUuid) {
-        return answerService.get(questionUuid, answerUuid)
+        return answerService.findAnswer(questionUuid, answerUuid)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{questionUuid}/answers/{answerUuid}")
-    public ResponseEntity updateQuestion(@PathVariable @NonNull final UUID questionUuid,
-                                         @PathVariable @NonNull final UUID answerUuid,
-                                         @RequestBody final Answer answer) {
+    public ResponseEntity updateAnswer(@PathVariable @NonNull final UUID questionUuid,
+                                       @PathVariable @NonNull final UUID answerUuid,
+                                       @RequestBody final Answer answer) {
         answerService.updateAnswer(questionUuid, answerUuid, answer);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{questionUuid}/answers/{answerUuid}")
-    public ResponseEntity deleteQuestion(@PathVariable @NonNull final UUID questionUuid,
-                                         @PathVariable @NonNull final UUID answerUuid) {
+    public ResponseEntity deleteAnswer(@PathVariable @NonNull final UUID questionUuid,
+                                       @PathVariable @NonNull final UUID answerUuid) {
         answerService.deleteAnswer(questionUuid, answerUuid);
         return ResponseEntity.noContent().build();
     }

@@ -24,10 +24,15 @@ public class SurveyEntity {
     @NonNull
     private final UUID uuid;
     @NonNull
-    private final String name;
-    @OneToMany(cascade = {DETACH, PERSIST, REFRESH})
+    private String name;
+    @OneToMany(cascade = {DETACH, PERSIST, REFRESH, MERGE}, mappedBy = "survey")
     @Fetch(SUBSELECT)
-    @JoinColumn(name = "survey_id")
     @NonNull
     private final List<QuestionEntity> questions;
+
+    @PrePersist @PreUpdate
+    private void setBothDirectionAssociation() {
+        assert questions != null;
+        questions.forEach(x -> x.setSurvey(this));
+    }
 }

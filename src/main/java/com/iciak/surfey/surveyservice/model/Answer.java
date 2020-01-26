@@ -15,4 +15,5 @@ public class Answer {
     UUID uuid;
     @NonNull
     String content;
+
 }

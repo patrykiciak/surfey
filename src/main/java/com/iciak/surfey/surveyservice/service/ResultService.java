@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,26 +39,19 @@ public class ResultService {
 
         resultRepository.save(ResultEntity.builder()
                 .chosenAnswer(answerRepository.findByUuid(result.getUserUuid()).orElseThrow(
-                        () -> new EntityNotFoundException("No such a UUID of Answer in the database")
-                ))
+                        () -> new EntityNotFoundException("No such a UUID of Answer in the database")))
                 .uuid(UUID.randomUUID())
                 .userUuid(result.getUserUuid())
                 .build());
     }
 
+    @Transactional
     public void update(@NonNull final UUID uuid, @NonNull final Result result) {
-        ResultEntity dbQuestion = resultRepository.findByUuid(uuid).orElseThrow(
-                () -> new EntityNotFoundException("No such a UUID of Result in the database")
-        );
-        resultRepository.save(ResultEntity.builder()
-                .userUuid(result.getUserUuid())
-                .id(dbQuestion.getId())
-                .uuid(uuid)
-                .chosenAnswer(answerRepository.findByUuid(result.getAnswerUuid()).orElseThrow(
-                        () -> new EntityNotFoundException("No such a UUID of Answer in the database")
-                ))
-                .build()
-        );
+        ResultEntity resultEntity = resultRepository.findByUuid(uuid).orElseThrow(
+                () -> new EntityNotFoundException("No such a UUID of Result in the database"));
+
+        resultEntity.setChosenAnswer(answerRepository.findByUuid(result.getAnswerUuid())
+                .orElseThrow(() -> new EntityNotFoundException("No such a UUID of Answer in the database")));
     }
 
     public void delete(@NonNull final UUID uuid) {

@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
+
 public interface SurveyRepository extends JpaRepository<SurveyEntity, Integer> {
 
     Optional<SurveyEntity> findByUuid(@NonNull final UUID uuid);
