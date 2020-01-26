@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import static javax.persistence.CascadeType.*;
 import static lombok.AccessLevel.PRIVATE;
+import static org.hibernate.annotations.FetchMode.SUBSELECT;
 
 @Data
 @Builder
@@ -28,7 +29,7 @@ public class QuestionEntity {
 
     @NonNull
     @OneToMany(cascade = ALL, orphanRemoval = true)
-    @Fetch(FetchMode.SUBSELECT)
+    @Fetch(SUBSELECT)
     @JoinColumn(nullable = false)
     private final List<AnswerEntity> answers;
 
