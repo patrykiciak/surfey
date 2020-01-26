@@ -1,5 +1,6 @@
 package com.iciak.surfey.surveyservice.service;
 
+import com.iciak.surfey.surveyservice.entity.AnswerEntity;
 import com.iciak.surfey.surveyservice.entity.QuestionEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
 import com.iciak.surfey.surveyservice.model.Question;
@@ -35,7 +36,11 @@ public class QuestionService {
                                 () -> new EntityNotFoundException("No such a UUID of Survey")
                         ))
                         .orElse(null))
-                .answers(question.getAnswers().stream().map(answerMapper::toEntity).collect(toList()))
+                .answers(question.getAnswers().stream().map(answer -> AnswerEntity.builder()
+                        .content(answer.getContent())
+                        .uuid(UUID.randomUUID())
+                        .build()
+                ).collect(toList()))
                 .build()
         );
     }
