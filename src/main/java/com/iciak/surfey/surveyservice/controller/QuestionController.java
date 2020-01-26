@@ -54,13 +54,13 @@ public class QuestionController {
     }
 
     @PostMapping("/{questionUuid}/answers")
-    public ResponseEntity createAnswer(@PathVariable @NonNull UUID questionUuid, @RequestBody @NonNull final Answer answer) {
+    public ResponseEntity createAnswer(@PathVariable @NonNull final UUID questionUuid, @RequestBody @NonNull final Answer answer) {
         answerService.createAnswer(questionUuid, answer);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{questionUuid}/answers")
-    public ResponseEntity<Answers> getAllAnswers(@PathVariable @NonNull UUID questionUuid) {
+    public ResponseEntity<Answers> getAllAnswers(@PathVariable @NonNull final UUID questionUuid) {
         return ResponseEntity.ok(answerService.findAll(questionUuid));
     }
 
