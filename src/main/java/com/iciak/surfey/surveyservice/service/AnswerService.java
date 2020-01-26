@@ -32,6 +32,7 @@ public class AnswerService {
                 .build();
     }
 
+    @Transactional
     public void createAnswer(@NonNull final UUID questionUuid, @NonNull final Answer answer) {
         QuestionEntity questionEntity = questionRepository.findByUuid(questionUuid).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Question in the database")
@@ -66,6 +67,7 @@ public class AnswerService {
         dbAnswer.setContent(answer.getContent());
     }
 
+    @Transactional
     public void deleteAnswer(@NonNull final UUID questionUuid, @NonNull final UUID answerUuid) {
         QuestionEntity questionEntity = questionRepository.findByUuid(questionUuid).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Question in the database")

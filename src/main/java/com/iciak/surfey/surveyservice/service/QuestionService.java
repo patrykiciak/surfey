@@ -1,7 +1,6 @@
 package com.iciak.surfey.surveyservice.service;
 
 import com.iciak.surfey.surveyservice.entity.QuestionEntity;
-import com.iciak.surfey.surveyservice.entity.SurveyEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
 import com.iciak.surfey.surveyservice.model.Question;
 import com.iciak.surfey.surveyservice.repository.QuestionRepository;
