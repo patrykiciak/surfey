@@ -34,15 +34,7 @@ public class UserService {
     }
 
     public void create(@NonNull final User user) {
-        userRepository.save(
-                UserEntity.builder()
-                        .uuid(UUID.randomUUID())
-                        .dateOfBirth(user.getDateOfBirth())
-                        .login(user.getLogin())
-                        .password(user.getPassword())
-                        .sex(user.getSex())
-                        .build()
-        );
+        userRepository.save(userMapper.createEntity(user));
     }
 
     @Transactional
