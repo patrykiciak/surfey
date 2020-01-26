@@ -18,7 +18,7 @@ public class UserMapper {
                 .dateOfBirth(user.getDateOfBirth())
                 .build();
     }
-    
+
     public UserEntity createEntity(@NonNull final User user) {
         return UserEntity.builder()
                 .uuid(UUID.randomUUID())
