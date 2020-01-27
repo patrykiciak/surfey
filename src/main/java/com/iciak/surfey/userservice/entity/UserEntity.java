@@ -1,15 +1,18 @@
 package com.iciak.surfey.userservice.entity;
 
-import com.iciak.surfey.userservice.enumerated.Sex;
-import lombok.*;
-
+import java.time.LocalDate;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import com.iciak.surfey.userservice.enumerated.Sex;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -24,6 +27,7 @@ public class UserEntity {
     private final int id;
     @NonNull
     @Column(unique = true)
+    // FINAL
     private UUID uuid;
     @NonNull
     @Column(unique = true)
@@ -31,6 +35,8 @@ public class UserEntity {
     @NonNull
     private String password;
     @NonNull
+
+    // REVIEW: @Enumerated(EnumType.STRING)
     private Sex sex;
     @NonNull
     private LocalDate dateOfBirth;

@@ -1,12 +1,17 @@
 package com.iciak.surfey.userservice.model;
 
-import lombok.*;
-
 import java.util.List;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Value;
 
 @Value
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE) //STATIC
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class Users {
     @NonNull

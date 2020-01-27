@@ -1,5 +1,10 @@
 package com.iciak.surfey.surveyservice.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import javax.transaction.Transactional;
+
 import com.iciak.surfey.surveyservice.entity.SurveyEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
 import com.iciak.surfey.surveyservice.model.Survey;
@@ -8,11 +13,6 @@ import com.iciak.surfey.surveyservice.service.mapper.SurveyMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -40,6 +40,7 @@ public class SurveyService {
 
     @Transactional
     public void update(@NonNull final UUID uuid, @NonNull final Survey survey) {
+        // final
         SurveyEntity surveyEntity = surveyRepository.findByUuid(uuid).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Survey in the database"));
 

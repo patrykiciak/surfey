@@ -1,13 +1,26 @@
 package com.iciak.surfey.surveyservice.entity;
 
-import lombok.*;
-import org.hibernate.annotations.Fetch;
-
-import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
-import static javax.persistence.CascadeType.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.hibernate.annotations.Fetch;
+
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
 import static lombok.AccessLevel.PRIVATE;
 import static org.hibernate.annotations.FetchMode.SUBSELECT;
 
@@ -18,7 +31,7 @@ import static org.hibernate.annotations.FetchMode.SUBSELECT;
 @Entity(name = "surveys")
 public class SurveyEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue //REVIEW: strategy IDENTITY
     private final int id;
     @Column(unique = true)
     @NonNull
@@ -32,6 +45,8 @@ public class SurveyEntity {
 
     @PrePersist @PreUpdate
     private void setBothDirectionAssociation() {
+        //REVIEW: 1. Nie uzywaj czegos takiego jak assert, to gowno, lepiej sthrowuj exception jakis dedykowany
+        //REVIEW: 2. Ale w tym przypadku questions nie bedzie nullem bo masz @NonNull nad nim wiec to niepotrzebne
         assert questions != null;
         questions.forEach(x -> x.setSurvey(this));
     }

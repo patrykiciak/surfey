@@ -1,5 +1,9 @@
 package com.iciak.surfey.surveyservice.service;
 
+import java.util.Optional;
+import java.util.UUID;
+import javax.transaction.Transactional;
+
 import com.iciak.surfey.surveyservice.entity.AnswerEntity;
 import com.iciak.surfey.surveyservice.entity.QuestionEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
@@ -10,10 +14,6 @@ import com.iciak.surfey.surveyservice.service.mapper.AnswerMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Optional;
-import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,20 +27,23 @@ public class AnswerService {
         return Answers.builder()
                 .answers(questionRepository.findByUuid(questionUuid)
                         .orElseThrow(() -> new EntityNotFoundException("No such a UUID of Question in the database"))
-                        .getAnswers()
+                        .getAnswers() //REVIEW map and collect to separate lines
                         .stream().map(answerMapper::toModel).collect(toList()))
                 .build();
     }
 
     @Transactional
     public void createAnswer(@NonNull final UUID questionUuid, @NonNull final Answer answer) {
+        //REVIEW: final
         QuestionEntity questionEntity = questionRepository.findByUuid(questionUuid).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Question in the database")
         );
         questionEntity.getAnswers().add(answerMapper.createEntity(answer));
     }
 
+    //REVIEW: usun to na Boga
     public Optional<Answer> findAnswer(@NonNull final UUID questionUuid, @NonNull final UUID answerUuid) {
+        //REVIEW: final
         QuestionEntity questionEntity = questionRepository.findByUuid(questionUuid).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Question in the database")
         );
@@ -52,6 +55,7 @@ public class AnswerService {
     }
 
     @Transactional
+    //REVIEW: na chuj Ci ten question
     public void updateAnswer(@NonNull final UUID questionUuid, @NonNull final UUID answerUuid, @NonNull final Answer answer) {
         QuestionEntity questionEntity = questionRepository.findByUuid(questionUuid).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Question in the database")
@@ -65,6 +69,7 @@ public class AnswerService {
     }
 
     @Transactional
+    //REVIEW: na chuj Ci ten question
     public void deleteAnswer(@NonNull final UUID questionUuid, @NonNull final UUID answerUuid) {
         QuestionEntity questionEntity = questionRepository.findByUuid(questionUuid).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Question in the database")

@@ -1,5 +1,10 @@
 package com.iciak.surfey.surveyservice.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import javax.transaction.Transactional;
+
 import com.iciak.surfey.surveyservice.entity.AnswerEntity;
 import com.iciak.surfey.surveyservice.entity.ResultEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
@@ -10,11 +15,6 @@ import com.iciak.surfey.surveyservice.service.mapper.ResultMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,7 +37,7 @@ public class ResultService {
     }
 
     public void create(@NonNull final Result result) {
-
+        //final
         AnswerEntity chosenAnswer = answerRepository.findByUuid(result.getUserUuid()).orElseThrow(
                 () -> new EntityNotFoundException("No such a UUID of Answer in the database"));
 

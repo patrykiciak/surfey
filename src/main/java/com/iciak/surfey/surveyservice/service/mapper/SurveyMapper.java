@@ -1,12 +1,12 @@
 package com.iciak.surfey.surveyservice.service.mapper;
 
+import java.util.UUID;
+
 import com.iciak.surfey.surveyservice.entity.SurveyEntity;
 import com.iciak.surfey.surveyservice.model.Survey;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -29,10 +29,11 @@ public class SurveyMapper {
 
     public SurveyEntity createEntity(@NonNull final Survey survey) {
         return SurveyEntity.builder()
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID()) //REVIEW: static import
                 .name(survey.getName())
                 .questions(survey.getQuestions()
                         .stream()
+                        //REVIEW: Mozesz przeciazyc ta metode bez survey entity, tylko z samym question i to brzydkie (createEntity(question, null) wywolac tam)
                         .map(question ->  questionMapper.createEntity(question, null))
                         .collect(toList()))
                 .build();

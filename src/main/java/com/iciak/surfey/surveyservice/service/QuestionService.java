@@ -1,5 +1,10 @@
 package com.iciak.surfey.surveyservice.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import javax.transaction.Transactional;
+
 import com.iciak.surfey.surveyservice.entity.QuestionEntity;
 import com.iciak.surfey.surveyservice.entity.SurveyEntity;
 import com.iciak.surfey.surveyservice.exception.EntityNotFoundException;
@@ -11,11 +16,6 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -26,8 +26,8 @@ public class QuestionService {
     private final QuestionMapper questionMapper;
 
     public void create(@NonNull final Question question) {
-
-        SurveyEntity surveyEntity = Optional.ofNullable(question.getSurveyUuid())
+        //REVIEW: final
+        SurveyEntity surveyEntity = Optional.ofNullable(question.getSurveyUuid()) //REVIEW: static import
                 .map(uuid -> surveyRepository.findByUuid(uuid).orElseThrow(
                         () -> new EntityNotFoundException("No such a UUID of Survey")
                 ))
@@ -38,6 +38,7 @@ public class QuestionService {
 
     @Transactional
     public void update(@NonNull final UUID questionUuid, @NonNull final Question question) {
+        // final
         QuestionEntity questionEntity = questionRepository.findByUuid(questionUuid)
                 .orElseThrow(() -> new EntityNotFoundException("No such a UUID of Question in the database"));
 

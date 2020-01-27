@@ -1,14 +1,23 @@
 package com.iciak.surfey.surveyservice.entity;
 
-import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
-import static javax.persistence.CascadeType.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.hibernate.annotations.Fetch;
+
+import static javax.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.PRIVATE;
 import static org.hibernate.annotations.FetchMode.SUBSELECT;
 
@@ -20,7 +29,7 @@ import static org.hibernate.annotations.FetchMode.SUBSELECT;
 public class QuestionEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue //REVIEW: strategy IDENTITY
     private int id;
 
     @Column(unique = true)
